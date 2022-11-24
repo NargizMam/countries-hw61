@@ -1,10 +1,10 @@
 import React from 'react';
-import './App.css';
+import MainPage from "./countries/MainPage/MainPage";
 
 function App() {
   return (
-    <div className="App">
-
+    <div className="App" style={{margin: '50px'}}>
+      <MainPage/>
     </div>
   );
 }
