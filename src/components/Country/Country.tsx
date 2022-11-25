@@ -6,34 +6,34 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import BordersCountry from "../BordersCountry/BordersCountry";
 
-const Country = () => {
+interface Props {
+    aboutCountry: AboutCountry;
+}
+
+const Country: React.FC<Props> = ({aboutCountry}) => {
     return (
         <div>
-            <Card sx={{ display: 'flex' }}>
+            <Card sx={{ display: 'flex', justifyContent: 'spaceBetween' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                     <CardContent sx={{ flex: '1 0 auto' }}>
                         <Typography component="div" variant="h5">
-                            Country name
+                            {aboutCountry.name}
                         </Typography>
                         <Typography variant="subtitle1" color="text.secondary" component="div">
-                            Capital
-                        </Typography>
-                        <Typography variant="subtitle1" color="text.secondary" component="div">
-                            Capital
+                            {aboutCountry.capital}
                         </Typography>
                     </CardContent>
                     <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                        Population
+                        {aboutCountry.population} человек
                     </Box>
-                    <BordersCountry/>
+                    <BordersCountry borders={aboutCountry.borders}/>
                 </Box>
                 <CardMedia
                     component="img"
-                    sx={{ width: 151 }}
-                    image="/static/images/cards/live-from-space.jpg"
+                    sx={{ width:180}}
+                    image={aboutCountry.flag}
                     alt="Flag"
                 />
-
             </Card>
 
 

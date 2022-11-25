@@ -1,24 +1,23 @@
 import React from 'react';
 import List from '@mui/material/List';
 import Typography from "@mui/material/Typography";
-import {hover} from "@testing-library/user-event/dist/hover";
+import {Button} from "@mui/material";
 
 interface Props {
-    countriesName: string[];
-    onClick: React.MouseEventHandler;
+    countries: Country[];
+    onClick: (alpha3Code: string) => void;
 }
 
-const CountriesList: React.FC<Props> = ({countriesName, onClick}) => {
-    return (
+const CountriesList: React.FC<Props> = ({countries, onClick}) => {
+    return countries && (
         <>
             <List
             sx={{
             width: '100%',
             maxWidth: 360,
-            bgcolor: 'background.paper',
             position: 'relative',
             overflow: 'auto',
-            maxHeight: 200,
+            maxHeight: 600,
                 '& ul': { padding: 0 },
         }}
             subheader={<li />}
@@ -26,15 +25,15 @@ const CountriesList: React.FC<Props> = ({countriesName, onClick}) => {
                 <Typography variant="h4" >
                     All countries
                 </Typography>
-        {countriesName.map((countryName) => (
-            <li key={'lfkvdlfvk'}>
-                <Typography variant="h6"
-                            style={{borderBottom: '1px dotted',margin: 10}}
-                            onClick={this.props.onClick}
-                >
-                    {countryName}
-                </Typography>
-            </li>
+                {countries.map((country) => (
+                <li key={country.alpha3Code} style={{borderBottom: '1px dotted',margin: 10}}>
+                    <img src={country.flag} alt="Flag" style={{width:50}}/>
+                    <Button
+                        onClick={() => onClick(country.alpha3Code)}
+                    >
+                        {country.name}
+                    </Button>
+                </li>
             ))}
             </List>
         </>

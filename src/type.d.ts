@@ -1,14 +1,16 @@
 interface Country {
     id: number;
     name: string;
-    capital: string;
-    population: number;
+    alpha3Code: string;
     flag: string;
 }
-interface CountryLi {
+interface AboutCountry {
     name: string;
+    capital: string;
+    flag: string;
+    population: string;
+    borders: string[];
 }
 interface BorderCountry {
-    id: number
     name: string;
 }

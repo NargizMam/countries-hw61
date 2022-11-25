@@ -3,34 +3,47 @@ import {Grid} from "@mui/material";
 import CountriesList from "../../components/CountriesList/CountriesList";
 import Country from "../../components/Country/Country";
 import axiosApi from "../../axiosApi";
+import Typography from "@mui/material/Typography";
 
 
-const ALL_URL = '/all?fields=alpha3Code,name';
-
+const ALL_URL = '/all?fields=alpha3Code,name,flag,population';
 const CODE_URL = '/alpha/';
+const BORDERS_URL = '/all?fields=alpha3Code';
 
 
 const MainPage = () => {
-    const [countriesName, setCountriesName] = useState<string[]>([])
-    ;
-    const [selectedCountryId, setSelectedCountryId] = useState<number | null>(null);
+    const [countries, setCountries] = useState<Country[]>([]);
+    const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+    const [aboutCountry, setAboutCountry] = useState<AboutCountry | null>(null);
+    const [bordersCountry, setBordersCountry] = useState<BorderCountry[] | null>(null);
 
     const fetchData = useCallback(async () => {
-        const countriesResponse = await axiosApi.get<CountryLi[]>(ALL_URL);
-        const promises = countriesResponse.data.map(async country => {
-            setCountriesName(prev=>[ ...prev, country.name]);
-            const countryResponse = await axiosApi.get<Country>(CODE_URL + 1);
-            const newCountry = countryResponse.data
-            return {
-                name: country.name,
-                capital: newCountry.capital,
-                population: newCountry.population,
-                flag: newCountry.flag
+        try{
+            const countriesResponse = await axiosApi.get<Country[]>(ALL_URL);
+            await setCountries(countriesResponse.data);
+            if(selectedCountry){
+                const countryResponse = await axiosApi.get<AboutCountry>(CODE_URL + selectedCountry);
+                let countryInfo ={
+                    name: countryResponse.data.name,
+                    capital: countryResponse.data.capital,
+                    flag: countryResponse.data.flag,
+                    population: countryResponse.data.population,
+                    borders: countryResponse.data.borders
+                }
+                setAboutCountry(countryInfo);
+                const promises = countryInfo.borders.map(async bordersAlpha3Code => {
+                    const bordersResponse = await axiosApi.get<Country>(CODE_URL + bordersAlpha3Code);
+                    return bordersResponse.data.name
+                });
+                const newBordersCountry = await Promise.all(promises);
+                console.log(newBordersCountry)
+                // setBordersCountry(newBordersCountry);
             }
-        });
-        console.log(countriesName)
-        const aboutCountry = await Promise.all(promises);
-        // setCountries(aboutCountry);
+
+        }catch (e) {
+            alert('Ошибка запроса!');
+        }
+
 
     },[]);
     useEffect(() => {
@@ -38,21 +51,23 @@ const MainPage = () => {
         fetchData().catch(console.error);
     },[fetchData]);
 
-    const clicked = () => {
-        console.log('d;vkzdvkdjn')
+    const clicked =  (alpha3Code: string) => {
+        setSelectedCountry(alpha3Code);
+        console.log(alpha3Code);
     }
     return (
         <Grid container spacing={5}>
             <Grid item xs={3}>
                 <CountriesList
                     key={Math.random()}
-                    countriesName={countriesName}
-                    onClick={() => clicked()}
+                    countries={countries}
+                    onClick={clicked}
                 />
             </Grid>
-            <Grid item xs={6}>
-                <Country/>
-            </Grid>
+            {aboutCountry ? <Grid item xs={6}>
+                <Country aboutCountry={aboutCountry}/>
+            </Grid> : <Typography>Выберите страну</Typography>
+            }
         </Grid>
     );
 };

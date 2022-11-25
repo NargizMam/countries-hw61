@@ -2,7 +2,11 @@ import React from 'react';
 import {ListItem, ListSubheader} from "@mui/material";
 import ListItemText from "@mui/material/ListItemText";
 
-const BordersCountry = () => {
+interface Props {
+    borders: BorderCountr[];
+}
+
+const BordersCountry:  = () => {
     return (
         <>
             <ul>
