@@ -1,5 +1,5 @@
 import React from 'react';
-import {ListItem, ListSubheader} from "@mui/material";
+import {ListSubheader} from "@mui/material";
 import Typography from "@mui/material/Typography";
 
 interface Props {
