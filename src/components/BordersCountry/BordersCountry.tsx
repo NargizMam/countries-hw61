@@ -1,20 +1,20 @@
 import React from 'react';
 import {ListItem, ListSubheader} from "@mui/material";
-import ListItemText from "@mui/material/ListItemText";
+import Typography from "@mui/material/Typography";
 
 interface Props {
-    borders: BorderCountr[];
+    borders: string[];
 }
 
-const BordersCountry:  = () => {
+const BordersCountry: React.FC<Props> = ({borders}) => {
     return (
         <>
             <ul>
                 <ListSubheader>{'Страны с которыми граничит' }</ListSubheader>
-                {[0, 1, 2].map((item) => (
-                    <ListItem key={Math.random()}>
-                        <ListItemText primary={'dvcv'} />
-                    </ListItem>
+                {borders.map((item) => (
+                    <Typography>
+                        {item}
+                    </Typography>
                 ))}
             </ul>
         </>

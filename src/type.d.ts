@@ -11,6 +11,4 @@ interface AboutCountry {
     population: string;
     borders: string[];
 }
-interface BorderCountry {
-    name: string;
-}
+

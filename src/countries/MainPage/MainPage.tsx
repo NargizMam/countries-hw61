@@ -8,14 +8,12 @@ import Typography from "@mui/material/Typography";
 
 const ALL_URL = '/all?fields=alpha3Code,name,flag,population';
 const CODE_URL = '/alpha/';
-const BORDERS_URL = '/all?fields=alpha3Code';
-
 
 const MainPage = () => {
     const [countries, setCountries] = useState<Country[]>([]);
     const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
     const [aboutCountry, setAboutCountry] = useState<AboutCountry | null>(null);
-    const [bordersCountry, setBordersCountry] = useState<BorderCountry[] | null>(null);
+    const [bordersCountry, setBordersCountry] = useState<string[] | null>(null);
 
     const fetchData = useCallback(async () => {
         try{
@@ -36,8 +34,7 @@ const MainPage = () => {
                     return bordersResponse.data.name
                 });
                 const newBordersCountry = await Promise.all(promises);
-                console.log(newBordersCountry)
-                // setBordersCountry(newBordersCountry);
+                setBordersCountry(newBordersCountry);
             }
 
         }catch (e) {
@@ -53,7 +50,6 @@ const MainPage = () => {
 
     const clicked =  (alpha3Code: string) => {
         setSelectedCountry(alpha3Code);
-        console.log(alpha3Code);
     }
     return (
         <Grid container spacing={5}>
